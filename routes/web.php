@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IconController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +21,10 @@ Route::get('/', function () {
 });
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/icon', [App\Http\Controllers\IconController::class, 'index'])->name('icon');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::resource('icon', IconController::class)->only([
+    'index', 'edit', 'update', 'destroy'
+]);
 
 Auth::routes();

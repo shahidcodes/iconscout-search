@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Icon;
+use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class IconController extends Controller
 {
@@ -14,7 +17,10 @@ class IconController extends Controller
      */
     public function index()
     {
-        return view('icons');
+        $icons = Icon::with("tags", "categories", "contributor")->paginate(8);
+        return view('icons', [
+            "icons" => $icons
+        ]);
     }
 
     /**
@@ -57,7 +63,7 @@ class IconController extends Controller
      */
     public function edit(Icon $icon)
     {
-        //
+        return view('icons_edit', ["icon" => $icon]);
     }
 
     /**
@@ -70,6 +76,47 @@ class IconController extends Controller
     public function update(Request $request, Icon $icon)
     {
         //
+        $payload = $request->validate([
+            "name" => "required",
+            "price" => "numeric",
+            "style" => "required",
+            "tags" => "required",
+            "categories" => "required"
+        ]);
+
+        $icon->fill($payload)->save();
+        $tags = explode(', ', $request->tags);
+        $tagsModel = [];
+        $iconTags = $icon->tags->toArray();
+        foreach ($tags as $tag) {
+            $index = array_search($tag, $iconTags);
+            if (false != $index) {
+                $tagsModel[] = new Tag($iconTags[$index]);
+            } else {
+                $tagsModel[] = new Tag([
+                    "name" => $tag
+                ]);
+            }
+        }
+        $icon->tags()->delete();
+        $icon->tags()->saveMany($tagsModel);
+
+        $categories = explode(', ', $request->categories);
+        $categoriesModel = [];
+        $iconcategories = $icon->categories->toArray();
+        foreach ($categories as $tag) {
+            $index = array_search($tag, $iconcategories);
+            if (false != $index) {
+                $categoriesModel[] = new Category($iconcategories[$index]);
+            } else {
+                $categoriesModel[] = new Category([
+                    "name" => $tag
+                ]);
+            }
+        }
+        $icon->categories()->delete();
+        $icon->categories()->saveMany($categoriesModel);
+        return Redirect::back()->with("message", "Successfully updated");
     }
 
     /**
@@ -81,5 +128,7 @@ class IconController extends Controller
     public function destroy(Icon $icon)
     {
         //
+        $icon->delete();
+        return Redirect::back()->with("message", "Successfully deleted");
     }
 }

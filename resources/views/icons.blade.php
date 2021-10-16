@@ -12,69 +12,56 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th style="width: 10px">#</th>
-                <th>Task</th>
-                <th>Progress</th>
-                <th style="width: 40px">Label</th>
+                <th style="width: 10px">ID</th>
+                <th>Icon</th>
+                <th>Name</th>
+                <th>Style</th>
+                <th>Tags</th>
+                <th>Contributor</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
+              @foreach($icons as $icon)
               <tr>
-                <td>1.</td>
-                <td>Update software</td>
+                <td>{{$icon->id}}</td>
                 <td>
-                  <div class="progress progress-xs">
-                    <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                  </div>
+                  <img src="{{$icon->image}}" class="rounded-circle" style="width:50px;height:50px;" />
                 </td>
-                <td><span class="badge bg-danger">55%</span></td>
-              </tr>
-              <tr>
-                <td>2.</td>
-                <td>Clean database</td>
+                <td>{{$icon->name}}</td>
                 <td>
-                  <div class="progress progress-xs">
-                    <div class="progress-bar bg-warning" style="width: 70%"></div>
-                  </div>
+                  {{$icon->style}}
                 </td>
-                <td><span class="badge bg-warning">70%</span></td>
-              </tr>
-              <tr>
-                <td>3.</td>
-                <td>Cron job running</td>
                 <td>
-                  <div class="progress progress-xs progress-striped active">
-                    <div class="progress-bar bg-primary" style="width: 30%"></div>
-                  </div>
+                  {{$icon->tags->pluck('name')->implode(', ')}}
                 </td>
-                <td><span class="badge bg-primary">30%</span></td>
-              </tr>
-              <tr>
-                <td>4.</td>
-                <td>Fix and squish bugs</td>
+                <td><span class="badge bg-primary">{{$icon->contributor->name}}</span></td>
                 <td>
-                  <div class="progress progress-xs progress-striped active">
-                    <div class="progress-bar bg-success" style="width: 90%"></div>
-                  </div>
+                  <form method="POST" action="{{ route('icon.destroy', $icon->id) }}" style="display:inline;">
+                    {{csrf_field()}}
+                    {{ method_field('DELETE') }}
+                    <button type="submit" class="btn btn-sm btn-danger">
+                      <span class="fas fa-trash"></span>
+                    </button>
+                  </form>
+                  <a href="{{route('icon.edit', $icon->id)}}" class="btn btn-sm btn-success">
+                    <span class="fas fa-edit"></span>
+                  </a>
                 </td>
-                <td><span class="badge bg-success">90%</span></td>
               </tr>
+              @endforeach
+
             </tbody>
           </table>
         </div>
         <!-- /.card-body -->
         <div class="card-footer clearfix">
-          <ul class="pagination pagination-sm m-0 float-right">
-            <li class="page-item"><a class="page-link" href="#">«</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">»</a></li>
-          </ul>
+          {{$icons->links()}}
         </div>
       </div>
       <!-- /.card -->
     </div>
   </div>
 </div>
+
 @endsection

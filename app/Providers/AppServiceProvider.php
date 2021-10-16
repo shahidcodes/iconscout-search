@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
@@ -33,5 +34,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        Paginator::useBootstrap();
     }
 }
