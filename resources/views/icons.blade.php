@@ -7,6 +7,7 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Icons</h3>
+          <a href="{{ route('icon.create') }}" class="btn btn-primary" style="float:right;">Add</a>
         </div>
         <div class="card-body">
           <table class="table table-bordered">

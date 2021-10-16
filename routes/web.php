@@ -23,8 +23,6 @@ Route::get('/', function () {
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::resource('icon', IconController::class)->only([
-    'index', 'edit', 'update', 'destroy'
-]);
+Route::resource('icon', IconController::class);
 
 Auth::routes();

@@ -12,7 +12,11 @@ class Icon extends Model
     use HasEvents;
 
     protected $fillable = [
-        'name', 'image', 'price', 'style'
+        'name',
+        'price',
+        'style',
+        'image',
+        'contributor_id',
     ];
 
     public function colors()

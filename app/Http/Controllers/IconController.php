@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Contributor;
 use App\Models\Icon;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class IconController extends Controller
      */
     public function create()
     {
-        //
+        return view('icons_add');
     }
 
     /**
@@ -41,7 +42,33 @@ class IconController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+        $iconData = $request->validate([
+            "name"          => "required|string",
+            "price"         => "required|numeric",
+            "style"         => "required|string",
+            "tags"          => "required|string",
+            "image"         => "required|string|url",
+            "categories"    => "required|string",
+            "contributor"   => "required|string"
+        ]);
         //
+        $contributor = Contributor::where("name", "LIKE", $iconData['contributor'])->first();
+        if (!$contributor) {
+            $contributor = Contributor::create([
+                "name" => $iconData["contributor"]
+            ]);
+        }
+        $iconData['contributor_id'] = $contributor->id;
+        // dd($iconData);
+        $icon = Icon::create($iconData);
+        $tags = array_map(fn ($v) => new Tag(["name" => trim($v)]), explode(',', $iconData['tags']));
+        $icon->tags()->saveMany($tags);
+
+        $categories = array_map(fn ($v) => new Tag(["name" => trim($v)]), explode(',', $iconData['categories']));
+        $icon->categories()->saveMany($categories);
+
+        return Redirect::back()->with("message", "Icon created successfully");
     }
 
     /**
