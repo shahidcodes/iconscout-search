@@ -8,13 +8,17 @@ class ElasticHelpers
 
   public static function buildSearchQuery($payload)
   {
+    $fullTextSearch = [];
     $filterQuery = [];
     $mustNotQuery = [];
 
     if (isset($payload['query'])) {
-      $filterQuery[] =  [
-        "query_string" => [
-          "query" => $payload['query']
+      $fullTextSearch =  [
+        "query" => $payload['query'],
+        "fields" => [
+          "name^30",
+          "tags^2",
+          "categories^1"
         ]
       ];
     }
@@ -73,6 +77,12 @@ class ElasticHelpers
 
     if (count($mustNotQuery) !== 0) {
       $query['query']['bool']['must_not'] = $mustNotQuery;
+    }
+
+    if (count($fullTextSearch) !== 0) {
+      $query['query'] = [
+        'simple_query_string' => $fullTextSearch
+      ];
     }
 
     return $query;
