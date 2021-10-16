@@ -84,7 +84,8 @@ class IconController extends Controller
             "categories" => "required"
         ]);
 
-        $icon->fill($payload)->save();
+        $icon->fill($payload);
+        $icon->save();
         $tags = explode(', ', $request->tags);
         $tagsModel = [];
         $iconTags = $icon->tags->toArray();

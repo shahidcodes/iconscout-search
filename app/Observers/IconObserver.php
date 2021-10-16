@@ -40,7 +40,8 @@ class IconObserver
      */
     public function updated(Icon $icon)
     {
-        //
+        $this->deleted($icon);
+        $this->created($icon);
         Log::debug("updated");
     }
 
@@ -53,28 +54,10 @@ class IconObserver
     public function deleted(Icon $icon)
     {
         //
-        Log::debug("updated");
-    }
-
-    /**
-     * Handle the Icon "restored" event.
-     *
-     * @param  \App\Models\Icon  $icon
-     * @return void
-     */
-    public function restored(Icon $icon)
-    {
-        //
-    }
-
-    /**
-     * Handle the Icon "force deleted" event.
-     *
-     * @param  \App\Models\Icon  $icon
-     * @return void
-     */
-    public function forceDeleted(Icon $icon)
-    {
-        //
+        $delResp = $this->client->delete([
+            "index" => "icons",
+            "id" => $icon->id
+        ]);
+        Log::debug("index deleted", ["resp" => $delResp]);
     }
 }
