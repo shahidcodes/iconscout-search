@@ -1,7 +1,10 @@
 # Yo
 
--   Model database
--   Integrate AdminLTE
--   Model elastic model
--   Add CRUD events which update indexes in elastic
--   Test
+-   [x] Model Database
+-   [x] Api Authentication
+-   [ ] Integrate AdminLTE
+-   [ ] Create ElasticSearch Model
+-   [x] Add observers on Icon model
+-   [ ] Update elastic index in observer events
+-   [ ] Dockerize
+-   [ ] Design nice UI
