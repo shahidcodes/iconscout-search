@@ -12,14 +12,7 @@
               <label for="iconName--edit">Name</label>
               <input type="text" class="form-control" name="name" id="iconName--edit" placeholder="Enter Name" value="{{$icon->name}}">
             </div>
-            <div class="form-group">
-              <label for="tags--edit">Tags</label>
-              <input type="text" class="form-control" id="tags--edit" name="tags" placeholder="Icon tags" value="{{$icon->tags->pluck('name')->implode(', ')}}">
-            </div>
-            <div class="form-group">
-              <label for="tags--edit">Categories</label>
-              <input type="text" class="form-control" id="tags--edit" name="categories" placeholder="Icon categories" value="{{$icon->categories->pluck('name')->implode(', ')}}">
-            </div>
+
             @csrf
             <div class="form-group">
               <label for="price--edit">Price</label>
@@ -28,6 +21,18 @@
             <div class="form-group">
               <label for="style--edit">Style</label>
               <input type="text" class="form-control" id="style--edit" name="style" placeholder="Icon style" value="{{$icon->style}}">
+            </div>
+            <div class="form-group">
+              <label for="url--edit">Url</label>
+              <input type="text" class="form-control" id="url--edit" name="image" placeholder="Icon url" value="{{$icon->image}}">
+            </div>
+            <div class="form-group">
+              <label for="tags--edit">Tags</label>
+              <input type="text" class="form-control" id="tags--edit" name="tags" placeholder="Icon tags" value="{{$icon->tags->pluck('name')->implode(', ')}}">
+            </div>
+            <div class="form-group">
+              <label for="tags--edit">Categories</label>
+              <input type="text" class="form-control" id="tags--edit" name="categories" placeholder="Icon categories" value="{{$icon->categories->pluck('name')->implode(', ')}}">
             </div>
             <div class="form-group">
               <label for="contributor--edit">Contributor</label>

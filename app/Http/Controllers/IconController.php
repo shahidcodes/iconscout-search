@@ -108,7 +108,8 @@ class IconController extends Controller
             "price" => "numeric",
             "style" => "required",
             "tags" => "required",
-            "categories" => "required"
+            "categories" => "required",
+            "image" => "required"
         ]);
 
         $icon->fill($payload);
