@@ -23,18 +23,18 @@ class Icon extends Model
         return $this->hasMany(Tag::class);
     }
 
-    public function format()
+    public function formats()
     {
-        return $this->hasOne(Format::class);
+        return $this->hasMany(Format::class);
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->hasOne(Category::class);
+        return $this->hasMany(Category::class);
     }
 
     public function contributor()
     {
-        return $this->hasOne(Contributor::class);
+        return $this->belongsTo(Contributor::class);
     }
 }

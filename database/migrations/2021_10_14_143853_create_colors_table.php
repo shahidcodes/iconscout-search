@@ -19,7 +19,7 @@ class CreateColorsTable extends Migration
             $table->string('code');
             $table->integer('weight');
             $table->unsignedBigInteger('icon_id');
-            $table->foreign('icon_id')->references('id')->on('icons');
+            $table->foreign('icon_id')->references('id')->on('icons')->onDelete('cascade');
         });
     }
 

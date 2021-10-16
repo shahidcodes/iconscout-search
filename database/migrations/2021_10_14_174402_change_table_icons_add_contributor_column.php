@@ -16,7 +16,7 @@ class ChangeTableIconsAddContributorColumn extends Migration
         //
         Schema::table("icons", function ($table) {
             $table->unsignedBigInteger('contributor_id');
-            $table->foreign('contributor_id')->references('id')->on('contributors');
+            $table->foreign('contributor_id')->references('id')->on('contributors')->onDelete('cascade');
         });
     }
 

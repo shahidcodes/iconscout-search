@@ -18,7 +18,7 @@ class CreateFormatsTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->unsignedBigInteger('icon_id');
-            $table->foreign('icon_id')->references('id')->on('icons');
+            $table->foreign('icon_id')->references('id')->on('icons')->onDelete('cascade');;
         });
     }
 

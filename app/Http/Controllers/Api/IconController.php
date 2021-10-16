@@ -22,8 +22,6 @@ class IconController extends Controller
 
         $icon = Icon::create($payload);
 
-
-
         $icon->colors()->saveMany(Color::fromArray($payload['colors']));
 
         return $icon;
