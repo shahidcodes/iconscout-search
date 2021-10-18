@@ -13,7 +13,7 @@
     </a>
 </li>
 <li class="nav-item menu-is-opening menu-open">
-    <a href="#" class="nav-link {{Request::is('team/*') || Request::is('team') ? 'active' : ''}}">
+    <a href="#" class="nav-link {{Request::is('team/*') || Request::is('team') || Request::is('member/*') || Request::is('member') ? 'active' : ''}}">
         <i class="nav-icon fas fa-user-cog"></i>
         <p>
             Team & Members
@@ -28,7 +28,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="./index2.html" class="nav-link">
+            <a href="{{ route('member.index') }}" class="nav-link {{Request::is('member/*') || Request::is('member') ? 'active' : ''}}">
                 <i class="fas fa-user nav-icon"></i>
                 <p>Members</p>
             </a>

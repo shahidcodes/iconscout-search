@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\ElasticIndexMapping;
 use App\Models\Icon;
 use Elasticsearch\Client;
 use Illuminate\Console\Command;
@@ -44,7 +45,7 @@ class IndexIcons extends Command
     {
         $newColors = [];
         foreach ($colors as $color) {
-            $newColors[$color['code']] = $color['weight'];
+            $newColors[] = ["code" => $color['code'], "weight" => $color['weight']];
         }
         return $newColors;
     }
@@ -75,16 +76,37 @@ class IndexIcons extends Command
      */
     public function handle()
     {
+        try {
+            $this->client->indices()->delete([
+                "index" => "icons"
+            ]);
+            $this->out->writeln("index dropped");
+        } catch (\Throwable $th) {
+            $this->out->writeln("index already dropped");
+        }
+        $this->client->indices()->create([
+            "index" => "icons",
+            "body" => [
+                "mappings" => ElasticIndexMapping::mapping()
+            ]
+        ]);
+        $this->out->writeln("index created");
         $icons = Icon::with("colors", "formats", "categories", "tags", "contributor")->get()->toArray();
+        $ndJSON = [
+            "body" => []
+        ];
         foreach ($icons as $icon) {
             $this->out->writeln("processing {$icon['id']}");
             $elasticModel = $this->buildModel($icon);
-            $this->client->index([
-                "index" => "icons",
-                "id" => $icon['id'],
-                "body" =>  $elasticModel
-            ]);
+            $ndJSON['body'][] = [
+                "index" => [
+                    "_index" => "icons",
+                    "_id" => $icon['id']
+                ]
+            ];
+            $ndJSON['body'][] = $elasticModel;
         }
+        $responses = $this->client->bulk($ndJSON);
         $this->out->writeln("done");
         return Command::SUCCESS;
     }

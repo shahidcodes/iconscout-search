@@ -6,8 +6,8 @@
     <div class="col-12 mt-4">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Teams</h3>
-          <a href="{{ route('team.create') }}" class="btn btn-primary" style="float:right;">Add</a>
+          <h3 class="card-title">Members</h3>
+          <a href="{{ route('member.create') }}" class="btn btn-primary" style="float:right;">Add</a>
         </div>
         <div class="card-body">
           <table class="table table-bordered">
@@ -15,33 +15,31 @@
               <tr>
                 <th style="width: 10px">ID</th>
                 <th>Name</th>
-                <th>Members</th>
+                <th>Team</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              @foreach($teams as $team)
+              @foreach($members as $member)
               <tr>
-                <td>{{$team->id}}</td>
+                <td>{{$member->id}}</td>
 
-                <td>{{$team->name}}</td>
+                <td>{{$member->name}}</td>
                 <td>
-                  {{$team->members_count}}
+                  {{$member->team->name}}
                 </td>
                 <td>
-                  <form method="POST" action="{{ route('team.destroy', $team->id) }}" style="display:inline;">
+                  <form method="POST" action="{{ route('member.destroy', $member->id) }}" style="display:inline;">
                     {{csrf_field()}}
                     {{ method_field('DELETE') }}
                     <button type="submit" class="btn btn-sm btn-danger">
                       <span class="fas fa-trash"></span>
                     </button>
                   </form>
-                  <a href="{{route('team.edit', $team->id)}}" class="btn btn-sm btn-success">
+                  <a href="{{route('member.edit', $member->id)}}" class="btn btn-sm btn-success">
                     <span class="fas fa-edit"></span>
                   </a>
-                  <a href="{{route('team.show', $team->id)}}" class="btn btn-sm btn-info">
-                    <span class="fas fa-eye"></span>
-                  </a>
+
                 </td>
               </tr>
               @endforeach
@@ -51,7 +49,7 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer clearfix">
-          {{$teams->links()}}
+          {{$members->links()}}
         </div>
       </div>
       <!-- /.card -->

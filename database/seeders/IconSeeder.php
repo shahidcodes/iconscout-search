@@ -37,7 +37,6 @@ class IconSeeder extends Seeder
      */
     public function run()
     {
-        $this->out->writeln("model truncated");
         $iconResponse = Http::get("https://s3.wasabisys.com/iconscout-dev/dist/icons.json");
         $contents = json_decode($iconResponse->getBody(), true);
         $this->out->writeln("http.get: done");

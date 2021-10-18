@@ -3,7 +3,10 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\IconController;
 use App\Http\Controllers\Api\SearchController;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,12 +24,6 @@ Route::get('/', function (Request $request) {
     return 'Hello world';
 });
 
-Route::get('/login', function (Request $req) {
-    return [
-        "type" => "error",
-        "message" => "Please login"
-    ];
-});
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
