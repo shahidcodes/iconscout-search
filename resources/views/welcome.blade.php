@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <style>
         * {
             font-family: 'Lato', sans-serif;
@@ -21,28 +22,35 @@
 
 <body class="">
     <div id="app">
-        <div class="h-96 bg-indigo-700 flex flex-col justify-center items-center">
-            <h3 class="text-white text-center text-3xl sm:text-4xl drop-shadow-sm font-bold"> Over 3.6 Million+ Design Assets </h3>
-            <p class="text-center px-16 lg:px-96 text-gray-200">
-                Curated SVGs, Vector Icons, Illustrations, 3D graphics, and Lottie Animations.
-                Over 4000+ new assets added every day. Integrated plugins, tools, editors, and more
-            </p>
-            <input v-model="searchText" type="text" class="w-11/12 max-w-2xl px-4 py-2 rounded mt-5 outline-none hover:shadow-lg ring-0 ring-indigo-600 hover:ring-1 focus:ring-1" />
-            <div class="flex flex-row py-2">
-                <input v-model="price" value="premium" type="radio" name="price" id="Premium" />
-                <label for="Premium" class="text-white mx-2">Premium</label>
-                <input v-model="price" value="free" type="radio" name="price" id="free" />
-                <label for="free" class="text-white mx-2">Free</label>
-                <input v-model="price" value="" type="radio" name="price" id="any" />
-                <label for="any" class="text-white mx-2">All</label>
+        <div class="pb-8 sm:pb-0 sm:h-96 bg-indigo-700 flex flex-col">
+            <div>
+                <a href="/login" class="bg-indigo-500 bg-opacity-50 text-white px-4 py-2 float-right m-4 rounded shadow hover:shadow-lg">Admin Panel</a>
+
             </div>
-            <button v-on:click="search" type="button" class="bg-indigo-600 mt-4 inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-rose-600 hover:bg-rose-500 focus:border-rose-700 active:bg-rose-700 transition ease-in-out duration-150">
-                <svg v-if="isLoading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                !{ isLoading ? 'Processing' : 'Search' }!
-            </button>
+            <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_3vbOcw.json" background="transparent" speed="1" class="absolute -left-2 -top-1 sm:top-12 sm:left-64 mr-2 w-28 h-28 sm:w-48 sm:h-48" loop autoplay></lottie-player>
+            <div class="sm:h-96 flex flex-col justify-center items-center">
+                <h3 class="text-white text-center text-3xl sm:text-4xl drop-shadow-sm font-bold"> Over 3.6 Million+ Design Assets </h3>
+                <p class="text-center px-16 lg:px-96 text-gray-200">
+                    Curated SVGs, Vector Icons, Illustrations, 3D graphics, and Lottie Animations.
+                    Over 4000+ new assets added every day. Integrated plugins, tools, editors, and more
+                </p>
+                <input v-model="searchText" type="text" class="w-11/12 max-w-2xl px-4 py-2 rounded mt-5 outline-none hover:shadow-lg ring-0 ring-indigo-600 hover:ring-1 focus:ring-1" />
+                <div class="flex flex-row py-4">
+                    <input v-model="price" value="premium" type="radio" name="price" id="Premium" />
+                    <label for="Premium" class="text-white mx-2">Premium</label>
+                    <input v-model="price" value="free" type="radio" name="price" id="free" />
+                    <label for="free" class="text-white mx-2">Free</label>
+                    <input v-model="price" value="" type="radio" name="price" id="any" />
+                    <label for="any" class="text-white mx-2">All</label>
+                </div>
+                <button v-on:click="search" type="button" class="bg-indigo-600 shadow inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-rose-600 hover:bg-rose-500 focus:border-rose-700 active:bg-rose-700 transition ease-in-out duration-150">
+                    <svg v-if="isLoading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    !{ isLoading ? 'Processing' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' }!
+                </button>
+            </div>
         </div>
         <div class="flex flex-col px-10 py-5" v-if="results.length > 0">
             <p class="pb-4" v-if="searched">!{total}! !{ searched }! results</p>
