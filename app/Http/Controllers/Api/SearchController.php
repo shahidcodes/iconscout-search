@@ -23,7 +23,7 @@ class SearchController extends Controller
     try {
       $payload = $request->validate([
         "query" => "string|nullable",
-        "price" => "in:free,premium",
+        "price" => "string|in:free,premium|nullable",
         "formats" => "string",
         "styles" => "string",
         "page" => "numeric",

@@ -28,6 +28,14 @@
                 Over 4000+ new assets added every day. Integrated plugins, tools, editors, and more
             </p>
             <input v-model="searchText" type="text" class="w-11/12 max-w-2xl px-4 py-2 rounded mt-5 outline-none hover:shadow-lg ring-0 ring-indigo-600 hover:ring-1 focus:ring-1" />
+            <div class="flex flex-row py-2">
+                <input v-model="price" value="premium" type="radio" name="price" id="Premium" />
+                <label for="Premium" class="text-white mx-2">Premium</label>
+                <input v-model="price" value="free" type="radio" name="price" id="free" />
+                <label for="free" class="text-white mx-2">Free</label>
+                <input v-model="price" value="" type="radio" name="price" id="any" />
+                <label for="any" class="text-white mx-2">All</label>
+            </div>
             <button v-on:click="search" type="button" class="bg-indigo-600 mt-4 inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-rose-600 hover:bg-rose-500 focus:border-rose-700 active:bg-rose-700 transition ease-in-out duration-150">
                 <svg v-if="isLoading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -65,7 +73,8 @@
             isLoading: false,
             searched: '',
             total: 0,
-            aggs: []
+            aggs: [],
+            price: ''
         },
         mounted: function() {
             this.searchText = ""
@@ -78,7 +87,8 @@
                 try {
                     this.searched = this.searchText
                     const query = Qs.stringify({
-                        query: this.searchText
+                        query: this.searchText,
+                        price: this.price
                     })
                     const response = await fetch(`/api/search?${query}`, {
                         method: "GET",
