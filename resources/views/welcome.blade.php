@@ -22,7 +22,7 @@
 <body class="">
     <div id="app">
         <div class="h-96 bg-indigo-700 flex flex-col justify-center items-center">
-            <h3 class="text-white text-4xl drop-shadow-sm font-bold"> Over 3.6 Million+ Design Assets </h3>
+            <h3 class="text-white text-center text-3xl sm:text-4xl drop-shadow-sm font-bold"> Over 3.6 Million+ Design Assets </h3>
             <p class="text-center px-16 lg:px-96 text-gray-200">
                 Curated SVGs, Vector Icons, Illustrations, 3D graphics, and Lottie Animations.
                 Over 4000+ new assets added every day. Integrated plugins, tools, editors, and more
@@ -37,11 +37,11 @@
             </button>
         </div>
         <div class="flex flex-col px-10 py-5" v-if="results.length > 0">
-            <p class="pb-4" v-if="searched">Showing result for !{ searched }!</p>
+            <p class="pb-4" v-if="searched">!{total}! !{ searched }! results</p>
             <p class="pb-4" v-if="!searched">Showing most recent</p>
 
-            <div class="flex flex-row justify-between">
-                <div v-for="result in results" :key="result.id" class="w-28 h-28 hover:border rounded transition-all px-2 text-center" v-for="result in results">
+            <div class="flex flex-row flex-wrap gap-2">
+                <div v-for="result in results" :key="result.id" class="w-28 h-28 my-4 hover:border rounded transition-all px-2 text-center" v-for="result in results">
                     <img :src="result.image" alt="" srcset="" />
                     <p>!{result.name}!</p>
                 </div>
@@ -63,7 +63,9 @@
             searchText: '',
             results: [],
             isLoading: false,
-            searched: ''
+            searched: '',
+            total: 0,
+            aggs: []
         },
         mounted: function() {
             this.searchText = ""
@@ -88,6 +90,8 @@
                     const json = await response.json()
                     console.log(json);
                     this.results = json.data.items;
+                    this.total = json.data.total;
+                    this.aggs = json.data.aggs;
                 } catch (error) {
 
                 }

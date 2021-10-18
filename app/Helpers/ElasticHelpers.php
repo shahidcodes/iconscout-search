@@ -2,27 +2,28 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Log;
 
 class ElasticHelpers
 {
 
   public static function buildSearchQuery($payload)
   {
-    $fullTextSearch = [];
     $filterQuery = [];
     $mustNotQuery = [];
 
     if (isset($payload['query'])) {
-      $fullTextSearch =  [
-        "query" => $payload['query'],
-        "fields" => [
-          "name^30",
-          "tags^2",
-          "categories^1"
+      $filterQuery[] =  [
+        "simple_query_string" => [
+          "query" => $payload['query'],
+          "fields" => [
+            "name^30",
+            "tags^2",
+            "categories^1"
+          ]
         ]
       ];
     }
-
     if (isset($payload['price'])) {
       $priceTermQuery = [
         "term" => [
@@ -74,29 +75,27 @@ class ElasticHelpers
         ]
       ]
     ];
-
     if (count($mustNotQuery) !== 0) {
       $query['query']['bool']['must_not'] = $mustNotQuery;
     }
-
-    if (count($fullTextSearch) !== 0) {
-      $query['query'] = [
-        'simple_query_string' => $fullTextSearch
-      ];
-    }
-
+    // dd(json_encode($query));
     return $query;
   }
 
   public static function makeResult($elasticResponse)
   {
-    $searchResults = $elasticResponse['hits']['hits'];
+    $hits = $elasticResponse['hits'];
+    $searchResults = $hits['hits'];
     $aggs = [];
     if (isset($elasticResponse['aggregations'])) {
       $aggs = $elasticResponse['aggregations']['styles']['buckets'];
       $aggs = array_map(fn ($v) => $v['key'], $aggs);
     }
     $results = array_map(fn ($v) => $v['_source'], $searchResults);
-    return [$results, $aggs];
+    return [
+      "items" => $results,
+      "aggs" => $aggs,
+      "total" => $hits["total"]["value"]
+    ];
   }
 }
